@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker
+    restart: unless-stopped
+    environment:
+    - TZ="Europe/Madrid"
+    network_mode: host
+    devices:
+    - /dev/dri:/dev/dri
+    privileged: true
+    volumes:
+    - /nfsPlex:/config
+    - /peliculas:/data/peliculas
+    - /series:/data/series
+

@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    environment:
+      - TZ=Europe/Madrid
+    ports:
+      - 3000:3000
+    volumes:
+      - /nfsGrafana/:/var/lib/grafana
+    environment:
+      - GF_AUTH_BASIC_ENABLED=false
+      - GF_AUTH_PROXY_ENABLED=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Homelab
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Editor
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    environment:
+      - TZ=Europe/Madrid
+      - GF_LOG_FILTERS=auth:debug
+    ports:
+      - 3001:9090
+    volumes:
+      - /nfsPrometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /nfsPrometheus/db/:/prometheus/
+    restart: unless-stopped
